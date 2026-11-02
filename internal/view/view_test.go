@@ -2,6 +2,8 @@ package view
 
 import (
 	"fmt"
+	"image"
+	"image/draw"
 	"image/png"
 	"math"
 	"os"
@@ -669,7 +671,11 @@ func TestRender(t *testing.T) {
 		tt.SetScale(2)
 		tt.Advance(2 * time.Second)
 		tt.Frame()
-		if err := png.Encode(f, tt.Image()); err != nil {
+		radius := 40.0 // a window's corners, at this scale
+		if w == FlyoutWidth {
+			radius = 28
+		}
+		if err := png.Encode(f, rounded(tt.Image(), radius)); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -715,6 +721,28 @@ func TestRender(t *testing.T) {
 		m.Snap.State.Sensors.PM25 = 45
 		save("flyout-moderate-"+theme.name, v.Flyout, FlyoutWidth, FlyoutHeight)
 	}
+}
+
+// rounded cuts a screenshot's corners, as on the window it shows.
+func rounded(src image.Image, radius float64) *image.NRGBA {
+	b := src.Bounds()
+	img := image.NewNRGBA(b)
+	draw.Draw(img, b, src, b.Min, draw.Src)
+	w, h := float64(b.Dx()), float64(b.Dy())
+	for y := range b.Dy() {
+		dy := max(radius-float64(y)-0.5, float64(y)+0.5-(h-radius), 0)
+		if dy == 0 {
+			continue
+		}
+		for x := range b.Dx() {
+			if dx := max(radius-float64(x)-0.5, float64(x)+0.5-(w-radius), 0); dx > 0 {
+				cover := max(0, min(1, radius-math.Hypot(dx, dy)+0.5))
+				alpha := img.PixOffset(b.Min.X+x, b.Min.Y+y) + 3
+				img.Pix[alpha] = uint8(float64(img.Pix[alpha]) * cover)
+			}
+		}
+	}
+	return img
 }
 
 // Set MOKO_ASSETS to a directory to draw the tray's icons into it:

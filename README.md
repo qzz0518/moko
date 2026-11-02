@@ -2,7 +2,8 @@
   <img src="docs/assets/icon.png" width="128" alt="Moko 图标" />
   <h1>Moko</h1>
   <p><strong>在 Mac 和 Windows 上查看和控制夏普 KI-SX100 加湿空气净化器。</strong></p>
-  <p>简体中文 · <a href="README_EN.md">English</a></p>
+  <p><a href="https://qzz0518.github.io/moko/">官网</a></p>
+  <p>简体中文 · <a href="README_EN.md">English</a> · <a href="README_JA.md">日本語</a></p>
   <p>
     <a href="https://github.com/qzz0518/moko/stargazers"><img src="https://img.shields.io/github/stars/qzz0518/moko?style=flat-square" alt="GitHub Stars" /></a>
     <img src="https://img.shields.io/badge/macOS-13%2B-black?style=flat-square&logo=apple" alt="macOS 13+" />
@@ -22,7 +23,7 @@ Moko 是界面里那朵云，名字来自日语「もこもこ」（软绵绵）
 Moko 直接通过局域网和净化器通信（ECHONET Lite），**不需要账号，也不经过云**。
 
 > [!IMPORTANT]
-> Moko 是独立项目，与夏普无关联、未获其背书。夏普没有公开这些私有属性的格式，这里的解读来自实机观察，只在一台 KI-SX100（无线模块 HW-A04、固件 104）上验证过：温湿度和耗材已和官方 COCORO AIR 对照，切模式（自动、静音）和开关加湿已实机写入。**开关机和其余模式的写入、在 Apple 家庭里的实际控制还没有验证，Windows 版也还没有实机运行过。** 详见 [docs/device-echonet.md](docs/device-echonet.md)。
+> Moko 是独立项目，与夏普无关联、未获其背书。夏普没有公开这些私有属性的格式，这里的解读来自实机观察，在一台 KI-SX100（无线模块 HW-A04、固件 104）上验证，详见 [docs/device-echonet.md](docs/device-echonet.md)。
 
 ## 功能
 

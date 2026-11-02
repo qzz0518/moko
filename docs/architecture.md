@@ -95,6 +95,10 @@ mygo 先做一个普通 DMG 并公证 app；`scripts/make-dmg.sh` 再用 `assets
 - 自动更新：`plugins/updater/native`，公钥在 `mygo.json`，更新包必须用私钥签名才会被接受。**私钥不进仓库**，发布脚本从钥匙串读取（服务名 `moko-updater`）。
 - Go 模块路径是 `github.com/qzz0518/moko`，`identifier` 发布后不要再变。
 
+### 落地页
+
+`site/` 是静态单页，改动推到 `main` 后由 `.github/workflows/pages.yml` 部署到 GitHub Pages。下载按钮从 GitHub API 取最新版本的文件，取不到时指向 Releases 页，所以发新版不用改它。
+
 ### 网络访问
 
 只有设备和 Apple 家庭走局域网，其余三类走互联网：更新（GitHub）、天气（Open-Meteo）、位置估算（ipwho.is，失败时 ipapi.co，只在没有手动选地点时）。天气可以关闭。

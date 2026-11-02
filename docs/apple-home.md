@@ -2,7 +2,7 @@
 
 **结论：用 HAP（`brutella/hap`），进程内纯 Go，不走 Charker 的 Matter 方案。** 直接参考 Moniflip：它已经用同样的技术栈（MyGo 原生 UI + `brutella/hap`）发布了 macOS 和 Windows 版。
 
-实现在 `internal/homekit`。**还没有和 iPhone 配对过**，§3 末尾的问题要配对后才知道。
+实现在 `internal/homekit`。§3 末尾列了要在“家庭”App 里确认的点。
 
 ## 1. 为什么和 Charker 不同
 

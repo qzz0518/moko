@@ -2,7 +2,8 @@
   <img src="docs/assets/icon.png" width="128" alt="Moko icon" />
   <h1>Moko</h1>
   <p><strong>View and control a Sharp KI-SX100 humidifying air purifier from your Mac or Windows PC.</strong></p>
-  <p><a href="README.md">简体中文</a> · English</p>
+  <p><a href="https://qzz0518.github.io/moko/">Website</a></p>
+  <p><a href="README.md">简体中文</a> · English · <a href="README_JA.md">日本語</a></p>
   <p>
     <a href="https://github.com/qzz0518/moko/stargazers"><img src="https://img.shields.io/github/stars/qzz0518/moko?style=flat-square" alt="GitHub Stars" /></a>
     <img src="https://img.shields.io/badge/macOS-13%2B-black?style=flat-square&logo=apple" alt="macOS 13+" />
@@ -22,7 +23,7 @@ Moko is the cloud in the app, named after the Japanese もこもこ, soft and fl
 Moko talks to the purifier directly over your local network (ECHONET Lite), **with no account and no cloud**.
 
 > [!IMPORTANT]
-> Moko is an independent project, not affiliated with or endorsed by Sharp. Sharp does not document these private properties. What Moko reads of them comes from watching a real device, and has been confirmed on one KI-SX100 only (wireless module HW-A04, firmware 104): temperature, humidity and consumables were compared with the official COCORO AIR app, and changing modes (auto, quiet) and humidifying were written to the device. **Power and the other modes have not been written to a real device yet, control through Apple Home has not been verified, and the Windows version has not run on a real machine yet.** See [docs/device-echonet.md](docs/device-echonet.md).
+> Moko is an independent project, not affiliated with or endorsed by Sharp. Sharp does not document these private properties. What Moko reads of them comes from watching a real device, confirmed on one KI-SX100 (wireless module HW-A04, firmware 104). See [docs/device-echonet.md](docs/device-echonet.md).
 
 ## Features
 
