@@ -1,0 +1,37 @@
+{
+  "fill": {
+    "linear-gradient": [
+      "srgb:0.16863,0.54902,1.00000,1.00000",
+      "srgb:0.11373,0.36863,0.96078,1.00000"
+    ],
+    "orientation": {
+      "start": { "x": 0, "y": 0 },
+      "stop": { "x": 1, "y": 1 }
+    }
+  },
+  "groups": [
+    {
+      "layers": [
+        { "image-name": "drop.png", "name": "drop", "glass": true }
+      ],
+      "shadow": { "kind": "neutral", "opacity": 0.2 },
+      "translucency": { "enabled": false, "value": 0.5 }
+    },
+    {
+      "layers": [
+        { "image-name": "moko.png", "name": "moko", "glass": true }
+      ],
+      "shadow": { "kind": "neutral", "opacity": 0.2 },
+      "translucency": { "enabled": false, "value": 0.5 }
+    },
+    {
+      "layers": [
+        { "image-name": "wind.png", "name": "wind", "glass": false }
+      ],
+      "translucency": { "enabled": false, "value": 0.5 }
+    }
+  ],
+  "supported-platforms": {
+    "squares": "shared"
+  }
+}

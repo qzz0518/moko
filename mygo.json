@@ -1,0 +1,32 @@
+{
+  "name": "Moko",
+  "slug": "moko",
+  "identifier": "io.github.qzz0518.moko",
+  "version": "0.1.0",
+  "copyright": "© 2026 qzz0518",
+  "icon": "assets/icon.png",
+  "out": "build",
+  "resources": [
+    "LICENSE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "updates": {
+    "publicKey": "IhIw17lnh9RUGwZX686SUq5cTrgP1BHD6hrUbTsHtEQ=",
+    "github": "qzz0518/moko"
+  },
+  "macos": {
+    "icon": "assets/AppIcon.icon",
+    "minimumSystemVersion": "13.0",
+    "infoPlist": {
+      "CFBundleDevelopmentRegion": "en",
+      "LSUIElement": true,
+      "NSLocalNetworkUsageDescription": "Moko uses the local network to control your air purifier and to connect it to Apple Home.",
+      "NSBonjourServices": [
+        "_hap._tcp"
+      ]
+    },
+    "notarize": {
+      "keychainProfile": "Charker-Notary"
+    }
+  }
+}

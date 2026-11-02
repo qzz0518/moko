@@ -1,0 +1,12 @@
+build/
+.DS_Store
+mygo-update.key
+/.mygo/
+mygo_windows_*.syso
+*.p12
+*.pfx
+*.p8
+*.cer
+*.dmg
+*.log
+.env
