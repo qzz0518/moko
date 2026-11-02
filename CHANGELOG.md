@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.1
+
+### 中文
+
+- 修复开机时启动、Apple 家庭和天气的开关没有滑动动画的问题，所有开关的表现现在一致。
+- 侧栏和内容区用不同的底色和一条细线分开。
+- 去掉侧栏底部多余的“在线”文字，只留状态指示灯。
+
+### English
+
+- Fixed the switches for open at login, Apple Home and the weather, which jumped instead of sliding. All switches now behave the same.
+- The sidebar now stands apart from the content, with its own color and a thin line between them.
+- Removed the redundant "Online" label at the foot of the sidebar; its status light says it.
+
 ## 0.1.0
 
 ### 中文

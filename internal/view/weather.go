@@ -152,9 +152,11 @@ func (v *View) weatherPage(c *ui.Context, k pal) {
 		sub += fmt.Sprintf(i18n.T(" · 更新于 %s", " · %s 更新", " · updated %s"), r.At.Format("15:04"))
 	}
 	pageTitle(c, k, i18n.T("天气", "天気", "Weather"), sub)
-	ui.Scroll(c.Key("scroll")).Grow(1).Gap(12).Children(func() {
+	page := ui.Scroll(c.Key("scroll")).Grow(1).Gap(12)
+	off := settled(page, m.WeatherOff)
+	page.Children(func() {
 		switch {
-		case m.WeatherOff:
+		case off:
 		case r == nil:
 			card(c.Key("wait"), k).Padding(28).Center().Children(func() {
 				ui.Text(c, i18n.T("正在读取天气，也可以在下面指定地点", "天気を読み込み中です。下で場所を指定することもできます", "Reading the weather. You can also choose a place below")).FontSize(12.5).TextColor(k.muted)
@@ -167,7 +169,7 @@ func (v *View) weatherPage(c *ui.Context, k pal) {
 			weatherHours(c.Key("hours"), k, r)
 			weatherDays(c.Key("days"), k, r)
 		}
-		v.weatherSettings(c.Key("settings"), k)
+		v.weatherSettings(c.Key("settings"), k, off)
 	})
 }
 
@@ -253,8 +255,8 @@ func weatherDays(c *ui.Context, k pal, r *weather.Report) {
 	})
 }
 
-// weatherSettings turns the weather on or off, and says where.
-func (v *View) weatherSettings(c *ui.Context, k pal) {
+// weatherSettings turns the weather on or off, and says where, unless it is off.
+func (v *View) weatherSettings(c *ui.Context, k pal, off bool) {
 	m := v.M
 	card(c, k).Children(func() {
 		settingRow(c.Key("on"), k, i18n.T("显示室外天气", "屋外の天気を表示", "Show the weather outside"), i18n.T("会访问网络，其余功能都只走局域网", "インターネットを使います。ほかの機能はローカルネットワークのみです", "Uses the internet; everything else stays on the local network"), func() {
@@ -263,7 +265,7 @@ func (v *View) weatherSettings(c *ui.Context, k pal) {
 				m.SetWeatherOn(want)
 			}
 		})
-		if m.WeatherOff {
+		if off {
 			return
 		}
 		hairline(c, k)

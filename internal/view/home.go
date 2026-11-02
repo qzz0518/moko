@@ -50,8 +50,10 @@ func qrSVG(text string) *ui.SVG {
 func (v *View) home(c *ui.Context, k pal) {
 	m := v.M
 	pageTitle(c, k, i18n.T("Apple 家庭", "Apple ホーム", "Apple Home"), i18n.T("在“家庭”App、Siri 和自动化里控制净化器", "「ホーム」アプリ、Siri、オートメーションで操作できます", "Control the purifier from the Home app, Siri and automations"))
-	paired := m.HomeEnabled && m.Home.Paired
-	ui.Scroll(c.Key("scroll")).Grow(1).Gap(14).Children(func() {
+	page := ui.Scroll(c.Key("scroll")).Grow(1).Gap(14)
+	enabled := settled(page, m.HomeEnabled)
+	paired := enabled && m.Home.Paired
+	page.Children(func() {
 		if paired {
 			v.homePaired(c.Key("paired"), k)
 		}
@@ -62,7 +64,7 @@ func (v *View) home(c *ui.Context, k pal) {
 					m.SetHomeEnabled(want)
 				}
 			})
-			if m.HomeEnabled {
+			if enabled {
 				hairline(c, k)
 				settingRow(c, k, i18n.T("防止电脑自动睡眠", "コンピュータのスリープを防ぐ", "Keep this computer awake"), i18n.T("电脑睡眠或应用退出时，“家庭”里会显示“无响应”", "スリープ中やアプリ終了中は「ホーム」に「応答なし」と表示されます", "While it sleeps or the app is closed, Home shows No Response"), func() {
 					want := m.KeepAwake
@@ -89,9 +91,9 @@ func (v *View) home(c *ui.Context, k pal) {
 		}
 		switch {
 		case paired:
-		case m.HomeEnabled && m.Home.SetupURI != "":
+		case enabled && m.Home.SetupURI != "":
 			v.homePairing(c.Key("pairing"), k)
-		case m.HomeEnabled:
+		case enabled:
 			ui.Row(c.Key("starting")).Gap(8).Padding(16).Children(func() {
 				ui.Spinner(c).Label(i18n.T("启动中", "起動中", "Starting"))
 				ui.Text(c, i18n.T("正在启动", "起動中", "Starting")).TextColor(k.muted)

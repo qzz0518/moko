@@ -26,7 +26,8 @@ func init() {
 // the rest.
 type pal struct {
 	dark                  bool
-	bg, card, card2, line ui.Color
+	bg, side, card, card2 ui.Color
+	line                  ui.Color
 	border, hover         ui.Color
 	text, muted, faint    ui.Color
 	accent, ink, soft     ui.Color // ink is the accent as text and icons
@@ -40,7 +41,7 @@ func palette(dark bool) pal {
 	if dark {
 		accent := ui.Oklch(0.68, 0.17, 255)
 		return pal{dark: true,
-			bg: ui.Oklch(0.17, 0.003, 85), card: ui.Oklch(0.215, 0.003, 85), card2: ui.Oklch(0.27, 0.003, 85),
+			bg: ui.Oklch(0.17, 0.003, 85), side: ui.Oklch(0.21, 0.003, 85), card: ui.Oklch(0.215, 0.003, 85), card2: ui.Oklch(0.27, 0.003, 85),
 			line: ui.RGBA(255, 255, 255, 0.08), border: ui.RGBA(255, 255, 255, 0.14), hover: ui.RGBA(255, 255, 255, 0.06),
 			text: ui.Oklch(0.96, 0.003, 85), muted: ui.Oklch(0.74, 0.004, 85), faint: ui.Oklch(0.66, 0.004, 85),
 			accent: accent, ink: ui.Oklch(0.8, 0.12, 255), soft: accent.Alpha(0.18), onAccent: ui.Oklch(0.17, 0.02, 255),
@@ -51,7 +52,7 @@ func palette(dark bool) pal {
 	}
 	accent := ui.Oklch(0.56, 0.2, 255)
 	return pal{
-		bg: ui.Oklch(0.955, 0.005, 85), card: ui.RGB(255, 255, 255), card2: ui.Oklch(0.94, 0.005, 85),
+		bg: ui.Oklch(0.955, 0.005, 85), side: ui.Oklch(0.925, 0.006, 85), card: ui.RGB(255, 255, 255), card2: ui.Oklch(0.94, 0.005, 85),
 		line: ui.RGBA(20, 18, 12, 0.08), border: ui.RGBA(20, 18, 12, 0.16), hover: ui.RGBA(20, 18, 12, 0.05),
 		text: ui.Oklch(0.2, 0.005, 85), muted: ui.Oklch(0.46, 0.006, 85), faint: ui.Oklch(0.52, 0.006, 85),
 		accent: accent, ink: ui.Oklch(0.5, 0.2, 255), soft: accent.Alpha(0.1), onAccent: ui.RGB(255, 255, 255),

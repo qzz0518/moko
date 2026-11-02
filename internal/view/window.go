@@ -14,11 +14,12 @@ func (v *View) Main(c *ui.Context) {
 	k := v.setup(c)
 	ui.Row(c).Fill().AlignItems(ui.Stretch).Background(k.bg).TextColor(k.text).FontSize(13).Lang(langTag()).Children(func() {
 		v.sidebar(c.Key("side"), k)
+		ui.Box(c.Key("divider")).Width(1).Background(k.line)
 		bar := c.TitleBar()
 		top := max(bar.Height, 22)
 		ui.Box(c.Key("content")).Grow(1).Basis(0).Children(func() {
 			// A page coming in rises a little as it fades in; the one it replaces just goes.
-			ui.Column(c.Key(v.Page)).Fill().Padding(top, 18, 18, 4).Gap(12).Transition(ui.ElementTransition{
+			ui.Column(c.Key(v.Page)).Fill().Padding(top, 18, 18, 18).Gap(12).Transition(ui.ElementTransition{
 				Duration: 240 * time.Millisecond, Ease: ui.CubicBezier(0.32, 0.72, 0, 1), Enter: &ui.Motion{Y: 8},
 			}).Children(func() {
 				switch {
@@ -51,7 +52,7 @@ const (
 
 func (v *View) sidebar(c *ui.Context, k pal) {
 	bar := c.TitleBar()
-	ui.Column(c).Width(172).Background(k.bg).Cache().Padding(max(bar.Height+8, 22), 10, 18, 14).Children(func() {
+	ui.Column(c).Width(172).Background(k.side).Cache().Padding(max(bar.Height+8, 22), 10, 18, 14).Children(func() {
 		ui.Box(c.Key("drag")).Absolute().Top(0).Left(0).Right(0).Height(max(bar.Height, 12)).DragWindow()
 		ui.Row(c.Key("brand")).Gap(9).AlignItems(ui.Center).Padding(0, 6, 16, 6).Children(func() {
 			brandMark(c, 26)
@@ -104,19 +105,19 @@ func (v *View) nav(c *ui.Context, k pal, page Page, ic *ui.SVG, label string) {
 	})
 }
 
-// deviceRow says at the foot of the sidebar whether the device can be reached.
+// deviceRow says at the foot of the sidebar whether the device can be reached: its dot
+// does, and the word is there for pointing at it and for assistive technology.
 func (v *View) deviceRow(c *ui.Context, k pal) {
-	label, dot := i18n.T("搜索中", "検索中", "Searching"), k.faint
+	state, dot := i18n.T("搜索中", "検索中", "Searching"), k.faint
 	switch v.M.Snap.Phase {
 	case device.PhaseOnline:
-		label, dot = i18n.T("在线", "接続中", "Online"), k.ok
+		state, dot = i18n.T("在线", "接続中", "Online"), k.ok
 	case device.PhaseOffline:
-		label, dot = i18n.T("离线", "オフライン", "Offline"), k.warn
+		state, dot = i18n.T("离线", "オフライン", "Offline"), k.warn
 	}
-	ui.Row(c).Padding(0, 10).Height(26).Gap(7).AlignItems(ui.Center).Children(func() {
+	ui.Row(c).Padding(0, 10).Height(26).Gap(7).AlignItems(ui.Center).Label("KI-SX100 · " + state).Tooltip(state).Children(func() {
 		mark := ui.Box(c).Size(7, 7).Radius(3.5)
 		mark.Background(mark.AnimateColor("dot", dot, ui.Animation{Duration: 400 * time.Millisecond}))
-		ui.Text(c, "KI-SX100").FontSize(11.5).FontWeight(600).TextColor(k.muted).Grow(1).NoWrap()
-		ui.Text(c, label).FontSize(11.5).TextColor(k.faint).NoWrap()
+		ui.Text(c, "KI-SX100").FontSize(11.5).FontWeight(600).TextColor(k.muted).NoWrap()
 	})
 }

@@ -30,6 +30,22 @@ func press(b ui.Element) ui.Element {
 }
 
 // roll shows a number whose digits roll to a new value, up or down as it went.
+// settled is on, late enough for the switch that changes it to have finished sliding: a
+// page that rearranged at once would carry the knob away in the middle of its slide.
+// Turning on takes longer, past switchSlide in main.go: what it turns on has started by
+// then, and the page does not go through a state in between. Turning off comes before it.
+func settled(e ui.Element, on bool) bool {
+	wait := 180 * time.Millisecond
+	if on {
+		wait = 260 * time.Millisecond
+	}
+	at := e.AnimateTo("settled", b2f(on), ui.Animation{Duration: wait})
+	if on {
+		return at >= 0.99
+	}
+	return at > 0.01
+}
+
 func roll(c *ui.Context, s string) ui.Element {
 	e := ui.Text(c, s)
 	prev := ui.Local(e, "prev", func() string { return s })

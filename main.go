@@ -444,12 +444,20 @@ func (a *app) bindActions() {
 		a.invalidate()
 	}
 	m.SetOpenAtLogin = func(on bool) {
-		if err := mygo.App.SetOpenAtLogin(on); err != nil {
-			log.Printf("open at login: %v", err)
-			m.Notice = i18n.T("设置失败：打包后的应用才能开机启动", "設定できませんでした", "Could not change that")
-		}
-		m.OpenAtLogin = mygo.App.OpenAtLogin()
+		m.OpenAtLogin = on
 		a.invalidate()
+		// This holds the main thread, for over a second to turn it on, so it waits for the
+		// switch to slide, and the switch goes back if it fails.
+		time.AfterFunc(switchSlide, func() {
+			mygo.RunOnMain(func() {
+				if err := mygo.App.SetOpenAtLogin(m.OpenAtLogin); err != nil {
+					log.Printf("open at login: %v", err)
+					m.Notice = i18n.T("设置失败：打包后的应用才能开机启动", "設定できませんでした", "Could not change that")
+				}
+				m.OpenAtLogin = mygo.App.OpenAtLogin()
+				a.invalidate()
+			})
+		})
 	}
 	m.SetWaterAlert = func(on bool) {
 		a.cfg.NoWaterOff, m.WaterAlert = !on, on
@@ -521,6 +529,9 @@ func (a *app) bindActions() {
 	m.OpenURL = func(url string) { _ = mygo.Shell.OpenExternal(url) }
 	m.Quit = mygo.App.Quit
 }
+
+// switchSlide is how long a switch's knob takes to slide, with some to spare.
+const switchSlide = 220 * time.Millisecond
 
 // weatherEvery is how often the weather is read. The forecast changes more slowly.
 const weatherEvery = 20 * time.Minute
@@ -644,13 +655,19 @@ func (a *app) allowFirewall() {
 func (a *app) setHomeEnabled(on bool) {
 	a.cfg.HomeKit, a.m.HomeEnabled = on, on
 	a.cfg.save()
-	if on {
-		a.startHome()
-	} else {
-		a.hk.Stop()
-	}
-	a.applyKeepAwake()
-	a.refreshHome()
+	a.invalidate()
+	// Whether it is paired changes the page, so it waits for the switch to slide.
+	time.AfterFunc(switchSlide, func() {
+		mygo.RunOnMain(func() {
+			if a.cfg.HomeKit {
+				a.startHome()
+				return
+			}
+			a.hk.Stop()
+			a.applyKeepAwake()
+			a.refreshHome()
+		})
+	})
 }
 
 func (a *app) startHome() {

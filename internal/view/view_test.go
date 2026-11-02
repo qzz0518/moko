@@ -109,7 +109,7 @@ func click(t *testing.T, tt *ui.Tester, label string) {
 func TestOverviewShowsTheReadings(t *testing.T) {
 	v, _ := newView(online())
 	tt := tester(t, v.Main, 1040, 700)
-	for _, s := range []string{"空气很清新", "PM2.5", "24", "°C", "51", "13", "运行中", "加湿中 · 水箱有水", "自动", "夜间", "花粉", "效果实感", "飞沫粒子", "静音", "中", "强", "在线"} {
+	for _, s := range []string{"空气很清新", "PM2.5", "24", "°C", "51", "13", "运行中", "加湿中 · 水箱有水", "自动", "夜间", "花粉", "效果实感", "飞沫粒子", "静音", "中", "强", "KI-SX100"} {
 		if !tt.HasText(s) {
 			t.Errorf("no %q", s)
 		}
@@ -386,6 +386,11 @@ func TestHomePage(t *testing.T) {
 	m.HomeEnabled = true
 	m.Home = homekit.Status{Running: true, Code: "123-45-678", SetupURI: "X-HM://0023ISYWYABCD"}
 	tt.Frame()
+	if tt.HasText("123-45-678") {
+		t.Error("the page rearranged before the switch had slid")
+	}
+	tt.Advance(400 * time.Millisecond)
+	tt.Frame()
 	for _, s := range []string{"123-45-678", "提示“未认证配件”时选“仍然添加”", "防止电脑自动睡眠"} {
 		if !tt.HasText(s) {
 			t.Errorf("no %q", s)
@@ -511,6 +516,15 @@ func TestPriceSteps(t *testing.T) {
 	}
 }
 
+func TestSidebarSaysOnlineByItsDot(t *testing.T) {
+	v, _ := newView(online())
+	tt := tester(t, v.Main, 1040, 700)
+	// Assistive technology still gets the word, in the row's label.
+	if texts := tt.Texts(); !slices.Contains(texts, "KI-SX100") || slices.Contains(texts, "在线") {
+		t.Errorf("showing %q", texts)
+	}
+}
+
 func TestInsideAgainstOutside(t *testing.T) {
 	v, m := newView(online())
 	tt := tester(t, v.Main, 1040, 700)
@@ -564,6 +578,11 @@ func TestWeatherPage(t *testing.T) {
 		}
 	}
 	m.WeatherOff = true
+	tt.Frame()
+	if !tt.HasText("周二") {
+		t.Error("the page rearranged before the switch had slid")
+	}
+	tt.Advance(300 * time.Millisecond)
 	tt.Frame()
 	if tt.HasText("周二") || !tt.HasText("显示室外天气") {
 		t.Error("off: no forecast, and the switch to turn it on")
